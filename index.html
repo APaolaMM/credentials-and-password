@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="stylesheet.css" />
+  <title>Credenciales y contraseñas</title>
+
+</head>
+
+<body>
+	<div class="video">
+	<video controls autoplay width="640" height="480">
+		<source src="Módulo 2_Credentials and Passwords.mp4" type="video/mp4" />
+	</video>
+</div>
+    <div class="preguntasportema"> 
+<fieldset>
+	<legend>Cuestionario Credenciales y Contraseñas</legend>
+	<div id="test">
+		<div class="cuestion">1. “Si alguien la tuviera, podr&iacute;a comprometer todos nuestros servicios”. El enunciado anterior corresponde a una raz&oacute;n para:</div>
+		<div class="respuestas">
+			<label>
+				<input type="radio" name="0" value="a">&nbsp;a : No compartir contrase&nacute;as.</label>
+			<label>
+				<input type="radio" name="0" value="b">&nbsp;b : No utilizar la misma contrase&nacute;a para servicios diferentes.&nbsp;</label>
+			<label>
+				<input type="radio" name="0" value="c">&nbsp;c : No usar contrase&nacute;as por defecto.&nbsp;</label>
+		</div>
+		<div class="cuestion">2. “Al dejar de ser secretas, se perder&atilde; el control sobre los accesos. Adem&atilde;s, nunca se deben apuntar ni enviar”. El enunciado anterior corresponde a una raz&otilde;n para:</div>
+		<div class="respuestas">
+			<label>
+				<input type="radio" name="1" value="a">&nbsp;a : No compartir contrase&nacute;as. &nbsp;</label>
+			<label>
+				<input type="radio" name="1" value="b">&nbsp;b : Implementar doble factor para servicios cr&iacute;ticos.&nbsp;</label>
+			<label>
+				<input type="radio" name="1" value="c">&nbsp;c : No utilizar la misma contrase&nacute;a para servicios diferentes. &nbsp;</label>
+		</div>
+		<div class="cuestion">3. “Pueden ser f&aacute;cilmente identificables, por ser comunes a muchos servicios cotidianos o porque muchas se pueden encontrar por Internet.”El enunciado anterior corresponde a una raz&oacute;n para:</div>
+		<div class="respuestas">
+			<label>
+				<input type="radio" name="2" value="a">&nbsp;a : No usar contrase&nacute;as por defecto. &nbsp;</label>
+			<label>
+				<input type="radio" name="2" value="b">&nbsp;b : Implementar doble factor para servicios cr&iacute;ticos.&nbsp;</label>
+			<label>
+				<input type="radio" name="2" value="c">&nbsp;c : Valorar el uso de mecanismos de autenticaci&oacute;n externos. &nbsp;</label>
+		</div>
+	</div>
+	<button id="boton">Mostrar resultado</button>
+	<div id="resultado">
+		<br>
+	</div>
+	<script>
+		const contenedor = document.getElementById("test");
+		const botonRes = document.getElementById("boton");
+		const resultadoTest = document.getElementById("resultado");
+
+		const preguntas = [
+			{
+				pregunta: "1. “Si alguien la tuviera, podría comprometer todos nuestros servicios”. El enunciado anterior corresponde a una razón para:",
+				respuestas:
+				{
+					a: "No compartir contraseñas.",
+					b: "No utilizar la misma contraseña para servicios diferentes.",
+					c: "No usar contraseñas por defecto.",
+				},
+				respuestaCorrecta: "b",
+			},
+			{
+				pregunta: "2. “Al dejar de ser secretas, se perderá el control sobre los accesos. Además, nunca se deben apuntar ni enviar”. El enunciado anterior corresponde a una razón para:",
+				respuestas:
+				{
+					a: "No compartir contraseñas.",
+					b: "Implementar doble factor para servicios críticos.",
+					c: "No utilizar la misma contraseña para servicios diferentes.",
+				},
+				respuestaCorrecta: "a",
+			},
+			{
+				pregunta: "3. “Pueden ser fácilmente identificables, por ser comunes a muchos servicios cotidianos o porque muchas se pueden encontrar por Internet.”El enunciado anterior corresponde a una razón para:",
+				respuestas:
+				{
+					a: "No utilizar contraseñas por defecto.",
+					b: "Implementar doble factor para servicios críticos.",
+					c: "Valorar el uso de mecanismos de autenticación externos.",
+				},
+				respuestaCorrecta: "a",
+			},
+
+		];
+
+		function mostrarTest()
+		{
+			const preguntasYrespuestas = [];
+
+			preguntas.forEach((preguntaActual, numeroDePregunta) =>
+			{
+
+				const respuestas = [];
+
+				for (letraRespuesta in preguntaActual.respuestas)
+				{
+
+					respuestas.push(
+
+						`
+        <label>
+                  <input type="radio" name="${numeroDePregunta}" value="${letraRespuesta}" />
+                  ${letraRespuesta} : ${preguntaActual.respuestas[letraRespuesta]} <br>
+              </label>` 
+					);
+                   
+				}
+
+				preguntasYrespuestas.push(
+					`
+      <div class="cuestion">${preguntaActual.pregunta}</div>
+      
+          <div class="respuestas"> ${respuestas.join("")} </div>
+          `
+				);
+			});
+
+			contenedor.innerHTML = preguntasYrespuestas.join("");
+		}
+
+		mostrarTest();
+
+		function mostrarResultado()
+		{
+			const respuestas = contenedor.querySelectorAll(".respuestas");
+			let respuestasCorrectas = 0;
+
+			preguntas.forEach((preguntaActual, numeroDePregunta) =>
+			{
+				const todasLasRespuestas = respuestas[numeroDePregunta];
+				const checkboxRespuestas = `input[name='${numeroDePregunta}']:checked`;
+				const respuestaElegida = (
+					todasLasRespuestas.querySelector(checkboxRespuestas) ||
+					{}
+				).value;
+
+				if (respuestaElegida === preguntaActual.respuestaCorrecta)
+				{
+					respuestasCorrectas++;
+
+					respuestas[numeroDePregunta].style.color = "blue";
+				}
+				else
+				{
+					respuestas[numeroDePregunta].style.color = "red";
+				}
+			});
+
+			resultadoTest.innerHTML =
+				"Usted ha acertado " +
+				respuestasCorrectas +
+				" preguntas de un total de " +
+				preguntas.length;
+		}
+
+		botonRes.addEventListener("click", mostrarResultado);
+
+	</script>
+       </div>
+
+</fieldset>
+</body>
+</html>
